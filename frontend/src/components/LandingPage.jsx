@@ -31,7 +31,7 @@ const LandingPage = ({ user, onLogout }) => {
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/stays">Stays</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/flights">Flights</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/plans">Plans</Link>
-            <a className="text-gray-500 hover:text-indigo-600 transition-colors" href="#">Smart Planner</a>
+            <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/favorites">Favorites</Link>
             {user && <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/my-reservations">My Bookings</Link>}
           </div>
 
@@ -111,70 +111,7 @@ const LandingPage = ({ user, onLogout }) => {
             </motion.p>
           </div>
 
-          {/* KEPT: Dynamic Smart Planner Form Overlay */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-full max-w-[1100px] px-8 z-20"
-          >
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 grid grid-cols-1 md:grid-cols-5 gap-6 items-end">
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-indigo-600">location_on</span> Destination
-                </label>
-                <input className="w-full bg-gray-50 border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-indigo-600 transition-all text-sm" placeholder="Where to?" type="text" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-indigo-600">payments</span> Budget
-                </label>
-                <input className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" type="range" />
-                <div className="flex justify-between text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                  <span>$500</span><span>$10k+</span>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-indigo-600">calendar_month</span> Duration
-                </label>
-                <input className="w-full bg-gray-50 border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-indigo-600 transition-all text-sm" placeholder="Days" type="number" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-bold text-gray-700 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-indigo-600">category</span> Travel type
-                </label>
-                <select className="w-full bg-gray-50 border-none rounded-xl py-3 px-4 focus:ring-2 focus:ring-indigo-600 transition-all text-sm appearance-none">
-                  <option>Leisure</option>
-                  <option>Adventure</option>
-                  <option>Business</option>
-                  <option>Luxury</option>
-                </select>
-              </div>
-              <button
-                onClick={handleGenerate}
-                disabled={isGenerating}
-                className="w-full bg-indigo-600 text-white rounded-xl py-4 font-bold shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all hover:translate-y-[-2px] active:scale-95 whitespace-nowrap flex items-center justify-center gap-2 disabled:opacity-70 disabled:translate-y-0"
-              >
-                {isGenerating ? (
-                  <>
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    >
-                      <Sparkles size={20} />
-                    </motion.div>
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Compass size={20} />
-                    Generate Smart Trip
-                  </>
-                )}
-              </button>
-            </div>
-          </motion.div>
+
         </section>
 
         {/* New Services Section */}
@@ -291,7 +228,7 @@ const LandingPage = ({ user, onLogout }) => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { name: 'Sarah Jenkins', role: 'Backpacker & Photographer', quote: '"The Smart Planner found a route through Tokyo that I never would have discovered. It felt like having a local guide in my pocket."' },
+              { name: 'Sarah Jenkins', role: 'Backpacker & Photographer', quote: '"The Favorites feature lets me curate the perfect itinerary effortlessly. It felt like having a local guide in my pocket."' },
               { name: 'Mark Thompson', role: 'Business Traveler', quote: '"Booking our honeymoon was effortless. VoyageSmart took care of the details so we could focus on the experience. Highly recommend!"' },
               { name: 'Elena Rodriguez', role: 'Family Travel Planner', quote: '"I love the budget slider feature. It helped us plan a luxury-feeling trip to Portugal without breaking our savings goals."' }
             ].map((test, i) => (

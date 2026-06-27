@@ -279,7 +279,7 @@ const PlanDetails = ({ user, onLogout }) => {
             <Link className="text-slate-500 hover:text-indigo-600 transition-all" to="/stays">Stays</Link>
             <Link className="text-slate-500 hover:text-indigo-600 transition-all" to="/flights">Flights</Link>
             <Link className="text-indigo-600 border-b-2 border-indigo-600 pb-1" to="/plans">Plans</Link>
-            <a className="text-slate-500 hover:text-indigo-600 transition-all" href="#">Smart Planner</a>
+            <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/favorites">Favorites</Link>
             {user && <Link className="text-slate-500 hover:text-indigo-600 transition-all" to="/my-reservations">My Bookings</Link>}
           </nav>
 

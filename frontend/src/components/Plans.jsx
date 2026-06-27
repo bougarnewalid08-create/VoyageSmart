@@ -2,14 +2,24 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import api, { BACKEND_URL } from '../api/axios'
+import FavoriteButton from './FavoriteButton'
+import { useFavorites } from '../hooks/useFavorites'
 
-const PlanFilterContent = ({ isMobile }) => (
+const PlanFilterContent = ({ isMobile, filters, setFilters }) => (
   <div className={isMobile ? "grid grid-cols-1 md:grid-cols-2 gap-8" : "space-y-10"}>
     <div className="space-y-6">
       <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] block">Trip Duration</span>
       <div className="grid grid-cols-3 gap-2">
         {['1-3', '4-7', '8-14'].map((days) => (
-          <button key={days} className="py-3 rounded-xl border border-slate-100 text-xs font-bold text-slate-600 hover:border-indigo-600 hover:text-indigo-600 transition-all">
+          <button 
+            key={days} 
+            onClick={() => setFilters({ ...filters, duration: filters.duration === days ? null : days })}
+            className={`py-3 rounded-xl border text-xs font-bold transition-all ${
+              filters.duration === days 
+                ? 'border-indigo-600 text-indigo-600 bg-indigo-50' 
+                : 'border-slate-100 text-slate-600 hover:border-indigo-600 hover:text-indigo-600'
+            }`}
+          >
             {days} Days
           </button>
         ))}
@@ -29,7 +39,19 @@ const PlanFilterContent = ({ isMobile }) => (
               <p className="text-xs font-bold text-slate-900">{tier.label}</p>
               <p className="text-[10px] text-slate-400">{tier.desc}</p>
             </div>
-            <input name="budget" className="h-5 w-5 rounded-full border-slate-200 text-indigo-600 focus:ring-indigo-600 transition-all" type="radio"/>
+            <input 
+              name="budget" 
+              type="radio"
+              checked={filters.budget === tier.label}
+              onChange={() => setFilters({ ...filters, budget: filters.budget === tier.label ? null : tier.label })}
+              onClick={(e) => {
+                if (filters.budget === tier.label) {
+                  e.preventDefault();
+                  setFilters({ ...filters, budget: null });
+                }
+              }}
+              className="h-5 w-5 rounded-full border-slate-200 text-indigo-600 focus:ring-indigo-600 transition-all" 
+            />
           </label>
         ))}
       </div>
@@ -44,9 +66,19 @@ const PlanFilterContent = ({ isMobile }) => (
           { icon: 'museum', label: 'Cultural' },
           { icon: 'spa', label: 'Wellness' }
         ].map((theme) => (
-          <label key={theme.label} className="flex items-center gap-3 p-4 rounded-2xl border border-slate-100 hover:bg-indigo-50/50 transition-all cursor-pointer group">
+          <label 
+            key={theme.label} 
+            onClick={() => setFilters({ ...filters, theme: filters.theme === theme.label ? null : theme.label })}
+            className={`flex items-center gap-3 p-4 rounded-2xl border transition-all cursor-pointer group ${
+              filters.theme === theme.label
+                ? 'border-indigo-600 bg-indigo-50'
+                : 'border-slate-100 hover:bg-indigo-50/50'
+            }`}
+          >
             <span className="material-symbols-outlined text-indigo-600 text-xl">{theme.icon}</span>
-            <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wider">{theme.label}</span>
+            <span className={`text-[10px] font-bold uppercase tracking-wider ${filters.theme === theme.label ? 'text-indigo-600' : 'text-slate-600'}`}>
+              {theme.label}
+            </span>
           </label>
         ))}
       </div>
@@ -57,9 +89,11 @@ const PlanFilterContent = ({ isMobile }) => (
 const Plans = ({ user, onLogout }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [itineraries, setItineraries] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
+  const { isFavorite } = useFavorites();
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({ duration: null, budget: null, theme: null });
 
   const fetchPlans = async () => {
     setLoading(true);
@@ -80,13 +114,40 @@ const Plans = ({ user, onLogout }) => {
   }, []);
 
   const filteredItineraries = itineraries.filter(plan => {
-    if (!searchQuery) return true;
-    const query = searchQuery.toLowerCase();
-    return (
-      plan.title.toLowerCase().includes(query) ||
-      plan.theme.toLowerCase().includes(query) ||
-      (Array.isArray(plan.stops) && plan.stops.some(stop => stop.toLowerCase().includes(query)))
-    );
+    let match = true;
+
+    // Search Query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      match = match && (
+        plan.title.toLowerCase().includes(query) ||
+        plan.theme.toLowerCase().includes(query) ||
+        (Array.isArray(plan.stops) && plan.stops.some(stop => stop.toLowerCase().includes(query)))
+      );
+    }
+
+    // Theme
+    if (filters.theme) {
+      match = match && (plan.theme.toLowerCase() === filters.theme.toLowerCase());
+    }
+
+    // Budget
+    if (filters.budget) {
+      const price = Number(plan.price);
+      if (filters.budget === 'Essential') match = match && (price < 1000);
+      else if (filters.budget === 'Premium') match = match && (price >= 1000 && price <= 3000);
+      else if (filters.budget === 'Luxe') match = match && (price > 3000);
+    }
+
+    // Duration
+    if (filters.duration) {
+      const numDays = parseInt(plan.duration.split(' ')[0], 10);
+      if (filters.duration === '1-3') match = match && (numDays >= 1 && numDays <= 3);
+      else if (filters.duration === '4-7') match = match && (numDays >= 4 && numDays <= 7);
+      else if (filters.duration === '8-14') match = match && (numDays >= 8 && numDays <= 14);
+    }
+
+    return match;
   });
 
   return (
@@ -106,7 +167,7 @@ const Plans = ({ user, onLogout }) => {
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/stays">Stays</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/flights">Flights</Link>
             <Link className="text-indigo-600 border-b-2 border-indigo-600 pb-1" to="/plans">Plans</Link>
-            <a className="text-gray-500 hover:text-indigo-600 transition-colors" href="#">Smart Planner</a>
+            <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/favorites">Favorites</Link>
             {user && <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/my-reservations">My Bookings</Link>}
           </div>
           <div className="flex-1 flex items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
@@ -146,7 +207,7 @@ const Plans = ({ user, onLogout }) => {
           <h3 className="text-3xl font-bold text-slate-900 tracking-tight mb-4">Journey Filters</h3>
           <p className="text-xs font-bold text-indigo-600 uppercase tracking-widest">Tailored Itineraries</p>
         </div>
-        <PlanFilterContent isMobile={false} />
+        <PlanFilterContent isMobile={false} filters={filters} setFilters={setFilters} />
         <button onClick={() => setIsFilterOpen(false)} className="w-full mt-10 py-5 bg-indigo-600 text-white rounded-[2rem] font-bold text-sm shadow-lg shadow-indigo-100 hover:bg-indigo-700 active:scale-95">Show Plans</button>
       </motion.div>
 
@@ -164,7 +225,7 @@ const Plans = ({ user, onLogout }) => {
           <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
             <span className="material-symbols-outlined text-indigo-600">map</span> Find your vibe
           </h3>
-          <PlanFilterContent isMobile={true} />
+          <PlanFilterContent isMobile={true} filters={filters} setFilters={setFilters} />
         </div>
 
         <div className="flex flex-col md:flex-row gap-4 items-center mb-16">
@@ -218,6 +279,7 @@ const Plans = ({ user, onLogout }) => {
                     <div className="absolute top-4 right-4 bg-indigo-600 text-white px-4 py-1.5 rounded-xl text-[10px] font-bold shadow-lg">
                       From ${Math.round(plan.price)}
                     </div>
+                    <FavoriteButton className="absolute bottom-4 right-4 z-10" itemType="plan" itemId={plan.id} initialIsFavorite={isFavorite('plan', plan.id)} />
                   </div>
                   <div className="p-6 pb-2">
                     <div className="flex items-center gap-2 mb-3">

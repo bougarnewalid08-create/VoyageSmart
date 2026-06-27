@@ -2,6 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import api, { BACKEND_URL } from '../api/axios'
+import FavoriteButton from './FavoriteButton';
+import { useFavorites } from '../hooks/useFavorites';
 
 const FilterContent = ({ isMobile, filters, setFilters }) => {
   const handlePriceChange = (e) => {
@@ -89,6 +91,7 @@ const Hotels = ({ user, onLogout }) => {
   const [isFilterOpen, setIsFilterOpen] = React.useState(false)
   const [dbHotels, setDbHotels] = React.useState([])
   const [loading, setLoading] = React.useState(true)
+  const { isFavorite } = useFavorites();
   const [error, setError] = React.useState(null)
 
   const [filters, setFilters] = React.useState({
@@ -152,7 +155,7 @@ const Hotels = ({ user, onLogout }) => {
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/stays">Stays</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/flights">Flights</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/plans">Plans</Link>
-            <a className="text-gray-500 hover:text-indigo-600 transition-colors" href="#">Smart Planner</a>
+            <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/favorites">Favorites</Link>
             {user && <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/my-reservations">My Bookings</Link>}
           </div>
 
@@ -283,12 +286,12 @@ const Hotels = ({ user, onLogout }) => {
                       alt={hotel.name}
                       loading="lazy"
                     />
-                    <div className="absolute top-5 right-5 bg-indigo-600 text-white px-4 py-2 rounded-2xl text-xs font-bold shadow-lg">
+                  <div className="absolute top-5 right-5 flex items-center z-10">
+                    <div className="bg-indigo-600 text-white pl-4 pr-6 py-2 rounded-l-full text-xs font-bold shadow-lg -mr-4">
                       ${hotel.price}<span className="font-medium opacity-80 text-[10px]">/night</span>
                     </div>
-                    <button className="absolute bottom-5 right-5 w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-white hover:bg-white hover:text-red-500 transition-all active:scale-90">
-                      <span className="material-symbols-outlined">favorite</span>
-                    </button>
+                    <FavoriteButton className="relative z-20 shadow-xl border border-white" itemType="hotel" itemId={hotel.id} initialIsFavorite={isFavorite('hotel', hotel.id)} />
+                  </div>
                   </div>
                   <div className="p-7">
                     <div className="flex items-center gap-1.5 text-amber-500 mb-3">
@@ -326,7 +329,7 @@ const Hotels = ({ user, onLogout }) => {
             <p className="text-slate-500 text-sm max-w-sm leading-relaxed font-medium">© 2024 VoyageSmart Global. Effortless discovery for the modern traveler with premium intelligence.</p>
           </div>
           <div className="flex flex-wrap justify-center gap-x-10 gap-y-5">
-            {['About', 'Destinations', 'Smart Planner', 'Privacy', 'Terms'].map(link => (
+            {['About', 'Destinations', 'Favorites', 'Privacy', 'Terms'].map(link => (
               <a key={link} className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 hover:text-indigo-600 transition-colors duration-300" href="#">{link}</a>
             ))}
           </div>

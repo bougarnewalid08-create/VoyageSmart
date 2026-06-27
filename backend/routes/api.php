@@ -42,6 +42,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/my-reservations', [ReservationController::class, 'myReservations']);
     Route::put('/reservations/{id}/cancel', [ReservationController::class, 'cancel']);
 
+    // Favorites
+    Route::get('/favorites', [\App\Http\Controllers\FavoriteController::class, 'index']);
+    Route::post('/favorites/toggle', [\App\Http\Controllers\FavoriteController::class, 'toggle']);
+
     // Flights Management
     Route::post('/flights', [\App\Http\Controllers\FlightController::class, 'store']);
     Route::put('/flights/{id}', [\App\Http\Controllers\FlightController::class, 'update']);

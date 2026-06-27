@@ -122,6 +122,7 @@ const StayDetails = ({ user, onLogout }) => {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     const fetchStay = async () => {
       if (id) {
         let dbId = id;
@@ -233,7 +234,7 @@ const StayDetails = ({ user, onLogout }) => {
             <Link className="text-indigo-600 border-b-2 border-indigo-600 pb-1" to="/stays">Stays</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/flights">Flights</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/plans">Plans</Link>
-            <a className="text-gray-500 hover:text-indigo-600 transition-colors" href="#">Smart Planner</a>
+            <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/favorites">Favorites</Link>
             {user && <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/my-reservations">My Bookings</Link>}
           </div>
 

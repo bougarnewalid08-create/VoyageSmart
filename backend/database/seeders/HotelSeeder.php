@@ -29,11 +29,17 @@ class HotelSeeder extends Seeder
                 'country' => 'Greece',
                 'description' => 'Boasting a prime location, opposite Constitution Square and the House of Parliament, the Grande Bretagne features luxurious rooms and stunning city views from its magnificent rooftop terrace.',
                 'price' => 450,
-                'image' => 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1000&auto=format&fit=crop',
+                'image' => 'https://cf.bstatic.com/xdata/images/hotel/max1024x768/590504526.jpg?k=e03ac82f7383c4093a91557f20f8c4eb1cfc380a211be1bede067e6ef1dd0fac&o=',
                 'stars' => 5,
                 'is_premier' => true,
                 'rating' => 9.2,
-                'reviews_count' => 1205
+                'reviews_count' => 1205,
+                'gallery' => [
+                    'https://cf.bstatic.com/xdata/images/hotel/max1024x768/646737124.jpg?k=50f03d416e015e493343aa1fad6a92afa6920dea8333335f307ed0bcaee2f37f&o=',
+                    'https://cf.bstatic.com/xdata/images/hotel/max1024x768/550508489.jpg?k=73bcf12b2f70b4a3e6b54ba461434af3f2a7adb19b4c48c239f946daa354cbfc&o=',
+                    'https://cf.bstatic.com/xdata/images/hotel/max1024x768/590504513.jpg?k=27f12c92c3f1093755575148f65770d4012f63ebb62b85de870a93e047b9db0a&o=',
+                    'https://cf.bstatic.com/xdata/images/hotel/max1024x768/590504520.jpg?k=447c3a4aed644541d2e4d863c64bdc489592529852d0eef195940e05bac7be55&o='
+                ]
             ],
             [
                 'name' => 'Eliassen Rorbuer',
@@ -98,7 +104,13 @@ class HotelSeeder extends Seeder
                 'stars' => 4,
                 'is_premier' => false,
                 'rating' => 8.8,
-                'reviews_count' => 1720
+                'reviews_count' => 1720,
+                'gallery' => [
+                    'https://cf.bstatic.com/xdata/images/hotel/max1024x768/537908752.jpg?k=afacd8d1fe84147819f0ff82bd41370b36dddb0a08fddcf41345ea1c74d4e882&o=',
+                    'https://cf.bstatic.com/xdata/images/hotel/max1024x768/658695334.jpg?k=ab9c0898836dfc2ef518c12db7896b0518b5155ca9b11066dc0d28f3895e9105&o=',
+                    'https://cf.bstatic.com/xdata/images/hotel/max1024x768/533742158.jpg?k=8d7da02efa1877c5fbcd9f09d05fffd47624a1de619cb5ce5a32f46e0f9b9f51&o=',
+                    'https://cf.bstatic.com/xdata/images/hotel/max1024x768/658695341.jpg?k=c6e33270d77a1985d76893522d080eb27af41c7d802a7476098486ab41453f8e&o='
+                ]
             ],
             [
                 'name' => 'Barceló Anfa Casablanca',
@@ -248,12 +260,21 @@ class HotelSeeder extends Seeder
             // Clear existing gallery images to avoid duplicates
             $hotel->images()->delete();
 
-            // Add some gallery images (placeholder)
-            for ($i = 1; $i <= 3; $i++) {
-                $hotel->images()->create([
-                    'image' => $hotelData['image'], // Re-use main for demo gallery
-                    'is_main' => false
-                ]);
+            // Add some gallery images
+            if (isset($hotelData['gallery'])) {
+                foreach ($hotelData['gallery'] as $galleryImage) {
+                    $hotel->images()->create([
+                        'image' => $galleryImage,
+                        'is_main' => false
+                    ]);
+                }
+            } else {
+                for ($i = 1; $i <= 3; $i++) {
+                    $hotel->images()->create([
+                        'image' => $hotelData['image'], // Re-use main for demo gallery
+                        'is_main' => false
+                    ]);
+                }
             }
         }
     }

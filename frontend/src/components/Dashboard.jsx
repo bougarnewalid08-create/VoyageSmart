@@ -515,8 +515,7 @@ const Dashboard = ({ user, onLogout }) => {
       user_id: stay.user_id
     });
     setShowAddForm(true);
-    
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 200, behavior: 'smooth' });
   };
 
   const handleSubmitStay = async (e) => {
@@ -582,17 +581,23 @@ const Dashboard = ({ user, onLogout }) => {
     );
   }
 
-  const filteredStays = stays.filter(s => {
-    const matchesSearch = s.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         s.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         s.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         s.country?.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesSearch;
-  });
-
-  const myStays = filteredStays.filter(s => s.user_id === user?.id);
   const [propertyView, setPropertyView] = useState('all'); // 'all' or 'mine'
-  const displayStays = propertyView === 'mine' ? myStays : filteredStays;
+
+  const applyFilters = (items, searchFields) => {
+    return items.filter(item => {
+      const term = searchTerm.toLowerCase();
+      const matchesSearch = !term || searchFields.some(field => 
+        (item[field] || '').toString().toLowerCase().includes(term)
+      );
+      const matchesUser = propertyView === 'all' || Number(item.user_id) === Number(user?.id);
+      return matchesSearch && matchesUser;
+    });
+  };
+
+  const displayStays = applyFilters(stays, ['name', 'location', 'city', 'country']);
+  const displayHotels = applyFilters(hotels, ['name', 'location', 'city', 'country']);
+  const displayFlights = applyFilters(flights, ['airline', 'flight_number', 'departure_city', 'arrival_city']);
+  const displayPlans = applyFilters(plans, ['title', 'destination']);
 
   return (
     <div className="flex min-h-screen bg-[#f8fafc]">
@@ -772,20 +777,6 @@ const Dashboard = ({ user, onLogout }) => {
                 <div>
                   <h2 className="text-2xl font-black text-slate-900 tracking-tight">Property Management</h2>
                   <p className="text-slate-400 text-sm font-medium mt-1">{displayStays.length} listings showing</p>
-                </div>
-                <div className="flex bg-slate-50 p-1.5 rounded-2xl border border-slate-100">
-                  <button 
-                    onClick={() => setPropertyView('all')}
-                    className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${propertyView === 'all' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                  >
-                    All Properties
-                  </button>
-                  <button 
-                    onClick={() => setPropertyView('mine')}
-                    className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all ${propertyView === 'mine' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                  >
-                    My Listings
-                  </button>
                 </div>
               </div>
               <button 
@@ -1174,7 +1165,7 @@ const Dashboard = ({ user, onLogout }) => {
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {flights.map(flight => {
+              {displayFlights.map(flight => {
                 const seats = calculateSeatDistribution(flight.total_seats);
                 return (
                   <div key={flight.id} className="bg-white p-6 rounded-[32px] border border-gray-100 flex gap-6 items-center shadow-sm hover:shadow-md transition-all">
@@ -1222,6 +1213,7 @@ const Dashboard = ({ user, onLogout }) => {
                             arrival_time: formatDatetimeLocal(arrDate)
                           }); 
                           setShowFlightForm(true); 
+                          window.scrollTo({ top: 200, behavior: 'smooth' });
                         }} 
                         className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center hover:bg-indigo-600 hover:text-white transition-all"
                       >
@@ -1365,7 +1357,7 @@ const Dashboard = ({ user, onLogout }) => {
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {hotels.map(hotel => (
+              {displayHotels.map(hotel => (
                 <div key={hotel.id} className="bg-white p-6 rounded-[32px] border border-gray-100 flex gap-6 items-center shadow-sm">
                   <div className="w-24 h-24 rounded-2xl overflow-hidden bg-slate-50 flex-shrink-0">
                     <img src={hotel.image ? (hotel.image.startsWith('http') ? hotel.image : `${BACKEND_URL}${hotel.image}`) : 'https://via.placeholder.com/150'} className="w-full h-full object-cover" alt={hotel.name} />
@@ -1385,6 +1377,7 @@ const Dashboard = ({ user, onLogout }) => {
                         galleryFiles: null
                       }); 
                       setShowHotelForm(true); 
+                      window.scrollTo({ top: 200, behavior: 'smooth' });
                     }} className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center hover:bg-indigo-600 hover:text-white transition-all"><Edit2 size={18} /></button>
                     <button onClick={() => handleDeleteHotel(hotel.id)} className="w-10 h-10 text-rose-300 hover:text-rose-600 flex items-center justify-center transition-all"><Trash2 size={18} /></button>
                   </div>
@@ -1686,7 +1679,7 @@ const Dashboard = ({ user, onLogout }) => {
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {plans.map(plan => (
+              {displayPlans.map(plan => (
                 <div key={plan.id} className="bg-white p-6 rounded-[32px] border border-gray-100 flex gap-6 items-center shadow-sm">
                   <div className="w-24 h-24 rounded-2xl overflow-hidden bg-slate-50 flex-shrink-0">
                     <img src={plan.image ? (plan.image.startsWith('http') ? plan.image : `${BACKEND_URL}${plan.image}`) : 'https://via.placeholder.com/150'} className="w-full h-full object-cover" alt={plan.title} />
@@ -1716,6 +1709,7 @@ const Dashboard = ({ user, onLogout }) => {
                       }); 
                       setActiveItineraryDay(1);
                       setShowPlanForm(true); 
+                      window.scrollTo({ top: 200, behavior: 'smooth' });
                     }} className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center hover:bg-indigo-600 hover:text-white transition-all"><Edit2 size={18} /></button>
                     <button onClick={() => handleDeletePlan(plan.id)} className="w-10 h-10 text-rose-300 hover:text-rose-600 flex items-center justify-center transition-all"><Trash2 size={18} /></button>
                   </div>

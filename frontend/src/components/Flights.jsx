@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { Check, Search, Calendar, Users, Briefcase, Plus, Minus } from 'lucide-react'
+import FavoriteButton from './FavoriteButton'
+import { useFavorites } from '../hooks/useFavorites'
 import api from '../api/axios'
 
 const Flights = ({ user, onLogout }) => {
   const [flights, setFlights] = useState([])
   const [loading, setLoading] = useState(true)
+  const { isFavorite } = useFavorites()
   const [error, setError] = useState(null)
   
   // Search parameters
@@ -270,7 +274,7 @@ const Flights = ({ user, onLogout }) => {
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/stays">Stays</Link>
             <Link className="text-indigo-600 border-b-2 border-indigo-600 pb-1" to="/flights">Flights</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/plans">Plans</Link>
-            <a className="text-gray-500 hover:text-indigo-600 transition-colors" href="#">Smart Planner</a>
+            <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/favorites">Favorites</Link>
             {user && <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/my-reservations">My Bookings</Link>}
           </div>
 
@@ -371,8 +375,11 @@ const Flights = ({ user, onLogout }) => {
                 key={flight.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300 group flex flex-col lg:flex-row items-center gap-8"
+                className="relative bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300 group flex flex-col lg:flex-row items-center gap-8"
               >
+                <div className="absolute top-4 left-4 z-10">
+                  <FavoriteButton itemType="flight" itemId={flight.id} initialIsFavorite={isFavorite('flight', flight.id)} />
+                </div>
                 {/* Airline Info */}
                 <div className="flex flex-col items-center justify-center w-full lg:w-48 shrink-0">
                     <img src={flight.airline_logo} alt={flight.airline} className="h-12 object-contain mb-3" />

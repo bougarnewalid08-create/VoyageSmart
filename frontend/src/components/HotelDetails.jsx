@@ -24,6 +24,7 @@ const HotelDetails = ({ user, onLogout }) => {
   const [reservationMessage, setReservationMessage] = useState('')
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     fetchHotel()
   }, [id])
 
@@ -260,7 +261,7 @@ const HotelDetails = ({ user, onLogout }) => {
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/stays">Stays</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/flights">Flights</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/plans">Plans</Link>
-            <a className="text-gray-500 hover:text-indigo-600 transition-colors" href="#">Smart Planner</a>
+            <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/favorites">Favorites</Link>
             {user && <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/my-reservations">My Bookings</Link>}
           </div>
 

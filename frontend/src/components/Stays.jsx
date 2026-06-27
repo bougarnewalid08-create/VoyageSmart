@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import FavoriteButton from './FavoriteButton'
+import { useFavorites } from '../hooks/useFavorites'
 import { BACKEND_URL } from '../api/axios'
 import api from '../api/axios'
 
@@ -8,7 +10,8 @@ import StayFilterPanel from './StayFilterPanel';
 
 const Stays = ({ user, onLogout }) => {
   const [dbStays, setDbStays] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
+  const { isFavorite } = useFavorites();
   const [error, setError] = useState(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
@@ -39,7 +42,7 @@ const Stays = ({ user, onLogout }) => {
 
   const allStays = [
     ...dbStays.map(s => ({
-      id: `db-${s.id}`,
+      id: s.id,
       name: s.name,
       location: s.location,
       price: s.price_per_night,
@@ -88,7 +91,7 @@ const Stays = ({ user, onLogout }) => {
             <Link className="text-indigo-600 border-b-2 border-indigo-600 pb-1" to="/stays">Stays</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/flights">Flights</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/plans">Plans</Link>
-            <a className="text-gray-500 hover:text-indigo-600 transition-colors" href="#">Smart Planner</a>
+            <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/favorites">Favorites</Link>
             {user && <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/my-reservations">My Bookings</Link>}
           </div>
 
@@ -198,12 +201,12 @@ const Stays = ({ user, onLogout }) => {
                   alt={stay.name} 
                   loading="lazy"
                 />
-                <div className="absolute top-5 right-5 bg-indigo-600 text-white px-4 py-2 rounded-2xl text-xs font-bold shadow-lg">
-                  ${stay.price}<span className="font-medium opacity-80 text-[10px]">/night</span>
+                <div className="absolute top-5 right-5 flex items-center z-10">
+                  <div className="bg-indigo-600 text-white pl-4 pr-6 py-2 rounded-l-full text-xs font-bold shadow-lg -mr-4">
+                    ${stay.price}<span className="font-medium opacity-80 text-[10px]">/night</span>
+                  </div>
+                  <FavoriteButton className="relative z-20 shadow-xl border border-white" itemType="stay" itemId={stay.id} initialIsFavorite={isFavorite('stay', stay.id)} />
                 </div>
-                <button className="absolute bottom-5 right-5 w-12 h-12 bg-black/30 backdrop-blur-md rounded-2xl flex items-center justify-center text-white hover:bg-white hover:text-red-500 transition-all active:scale-90">
-                  <span className="material-symbols-outlined">favorite</span>
-                </button>
               </div>
 
               <div className="p-7">

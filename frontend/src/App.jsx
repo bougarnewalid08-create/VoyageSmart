@@ -8,6 +8,7 @@ import Stays from './components/Stays'
 import Hotels from './components/Hotels'
 import Plans from './components/Plans'
 import PlanDetails from './components/PlanDetails'
+import Favorites from './components/Favorites'
 import HotelDetails from './components/HotelDetails'
 import StayDetails from './components/StayDetails'
 import MyReservations from './components/MyReservations'
@@ -185,6 +186,15 @@ function App() {
             element={
               <ProtectedRoute user={user}>
                 <MyReservations user={user} onLogout={handleLogout} />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/favorites" 
+            element={
+              <ProtectedRoute user={user}>
+                <Favorites user={user} onLogout={handleLogout} />
               </ProtectedRoute>
             } 
           />

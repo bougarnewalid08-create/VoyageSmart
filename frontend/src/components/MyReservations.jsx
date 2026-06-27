@@ -16,8 +16,9 @@ const MyReservations = ({ user, onLogout }) => {
   }
 
   useEffect(() => {
-    fetchReservations()
-  }, [])
+    window.scrollTo(0, 0);
+    fetchReservations();
+  }, []);
 
   const fetchReservations = async () => {
     try {
@@ -655,7 +656,7 @@ const MyReservations = ({ user, onLogout }) => {
             <p className="text-slate-500 text-sm max-w-sm leading-relaxed font-medium">© 2026 VoyageSmart Global. Effortless discovery for the modern traveler.</p>
           </div>
           <div className="flex flex-wrap justify-center gap-x-10 gap-y-5">
-            {['About', 'Destinations', 'Smart Planner', 'Privacy', 'Terms'].map(link => (
+            {['About', 'Destinations', 'Favorites', 'Privacy', 'Terms'].map(link => (
               <a key={link} className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 hover:text-indigo-600 transition-colors duration-300" href="#">{link}</a>
             ))}
           </div>
