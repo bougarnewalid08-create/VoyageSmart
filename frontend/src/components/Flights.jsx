@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, Search, Calendar, Users, Briefcase, Plus, Minus } from 'lucide-react'
 import FavoriteButton from './FavoriteButton'
+import MobileNav from './MobileNav'
 import { useFavorites } from '../hooks/useFavorites'
 import api from '../api/axios'
 
@@ -278,7 +279,7 @@ const Flights = ({ user, onLogout }) => {
             {user && <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/my-reservations">My Bookings</Link>}
           </div>
 
-          <div className="flex-1 flex items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
+          <div className="hidden md:flex flex-1 items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
             {user ? (
               <div className="flex items-center gap-4">
                 <div className="flex flex-col items-end">
@@ -299,6 +300,8 @@ const Flights = ({ user, onLogout }) => {
               </>
             )}
           </div>
+          
+          <MobileNav user={user} onLogout={onLogout} currentPath="/flights" />
         </nav>
       </header>
 
@@ -375,11 +378,14 @@ const Flights = ({ user, onLogout }) => {
                 key={flight.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="relative bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300 group flex flex-col lg:flex-row items-center gap-8"
+                className="relative bg-white p-4 md:p-8 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300 group flex flex-col lg:flex-row items-center gap-6 md:gap-8"
               >
-                <div className="absolute top-4 left-4 z-10">
-                  <FavoriteButton itemType="flight" itemId={flight.id} initialIsFavorite={isFavorite('flight', flight.id)} />
-                </div>
+                <FavoriteButton 
+                  itemType="flight" 
+                  itemId={flight.id} 
+                  initialIsFavorite={isFavorite('flight', flight.id)} 
+                  className="absolute top-4 left-4 z-10"
+                />
                 {/* Airline Info */}
                 <div className="flex flex-col items-center justify-center w-full lg:w-48 shrink-0">
                     <img src={flight.airline_logo} alt={flight.airline} className="h-12 object-contain mb-3" />
@@ -388,15 +394,15 @@ const Flights = ({ user, onLogout }) => {
                 </div>
 
                 {/* Flight Times */}
-                <div className="flex-1 w-full flex items-center justify-between gap-4">
+                <div className="flex-1 w-full flex items-center justify-between gap-2 md:gap-4">
                     <div className="text-center md:text-right flex-1">
                         <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block mb-1">{formatDate(flight.departure_time)}</span>
-                        <h3 className="text-3xl font-black text-slate-900 tracking-tighter">{formatTime(flight.departure_time)}</h3>
-                        <p className="text-sm font-bold text-slate-500 mt-1">{flight.departure_city}</p>
-                        <p className="text-xs font-bold text-indigo-400">{flight.departure_airport}</p>
+                        <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tighter">{formatTime(flight.departure_time)}</h3>
+                        <p className="text-xs md:text-sm font-bold text-slate-500 mt-1 truncate">{flight.departure_city}</p>
+                        <p className="text-[10px] md:text-xs font-bold text-indigo-400">{flight.departure_airport}</p>
                     </div>
 
-                    <div className="flex flex-col items-center px-4 md:px-8 w-40 shrink-0">
+                    <div className="flex flex-col items-center px-2 md:px-8 w-20 md:w-40 shrink-0">
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">{formatDuration(flight.duration)}</span>
                         <div className="w-full flex items-center">
                             <div className="w-2 h-2 rounded-full border-2 border-indigo-200"></div>
@@ -410,9 +416,9 @@ const Flights = ({ user, onLogout }) => {
 
                     <div className="text-center md:text-left flex-1">
                         <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block mb-1">{formatDate(flight.arrival_time)}</span>
-                        <h3 className="text-3xl font-black text-slate-900 tracking-tighter">{formatTime(flight.arrival_time)}</h3>
-                        <p className="text-sm font-bold text-slate-500 mt-1">{flight.arrival_city}</p>
-                        <p className="text-xs font-bold text-indigo-400">{flight.arrival_airport}</p>
+                        <h3 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tighter">{formatTime(flight.arrival_time)}</h3>
+                        <p className="text-xs md:text-sm font-bold text-slate-500 mt-1 truncate">{flight.arrival_city}</p>
+                        <p className="text-[10px] md:text-xs font-bold text-indigo-400">{flight.arrival_airport}</p>
                     </div>
                 </div>
 

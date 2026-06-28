@@ -106,25 +106,7 @@ const Login = ({ onLoginSuccess }) => {
             </button>
           </form>
 
-          <div className="relative my-8">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-100"></div>
-            </div>
-            <div className="relative flex justify-center text-[10px] uppercase tracking-widest font-bold">
-              <span className="px-4 bg-white text-gray-400">Or continue with</span>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <button className="flex items-center justify-center gap-2 bg-white border border-gray-100 py-2.5 rounded-xl hover:bg-gray-50 active:scale-[0.98] transition-all">
-              <img className="w-4 h-4" src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" alt="Google" />
-              <span className="text-xs font-bold text-gray-600">Google</span>
-            </button>
-            <button className="flex items-center justify-center gap-2 bg-white border border-gray-100 py-2.5 rounded-xl hover:bg-gray-50 active:scale-[0.98] transition-all">
-              <span className="material-symbols-outlined text-[18px]">ios</span>
-              <span className="text-xs font-bold text-gray-600">Apple</span>
-            </button>
-          </div>
 
           <div className="mt-8 text-center">
             <p className="text-xs text-gray-500 font-medium">

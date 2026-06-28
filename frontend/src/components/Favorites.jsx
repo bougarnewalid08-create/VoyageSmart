@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import FavoriteButton from './FavoriteButton';
+import MobileNav from './MobileNav';
 import { useFavorites } from '../hooks/useFavorites';
 import api, { BACKEND_URL } from '../api/axios';
 import { HeartCrack } from 'lucide-react';
@@ -81,7 +82,7 @@ const Favorites = ({ user, onLogout }) => {
             {user && <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/my-reservations">My Bookings</Link>}
           </div>
 
-          <div className="flex-1 flex items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
+          <div className="hidden md:flex flex-1 items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
             {user ? (
               <div className="flex items-center gap-4">
                 <div className="flex flex-col items-end">
@@ -102,6 +103,8 @@ const Favorites = ({ user, onLogout }) => {
               </>
             )}
           </div>
+          
+          <MobileNav user={user} onLogout={onLogout} currentPath="/favorites" />
         </nav>
       </header>
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import api, { BACKEND_URL } from '../api/axios'
 import FavoriteButton from './FavoriteButton';
+import MobileNav from './MobileNav'
 import { useFavorites } from '../hooks/useFavorites';
 
 const FilterContent = ({ isMobile, filters, setFilters }) => {
@@ -160,15 +161,13 @@ const Hotels = ({ user, onLogout }) => {
           </div>
 
           {/* Right Column: Profile/Auth */}
-          <div className="flex-1 flex items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
+          <div className="hidden md:flex flex-1 items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
             {user ? (
               <div className="flex items-center gap-4">
                 <div className="flex flex-col items-end">
                   <span className="text-xs font-bold text-gray-900">Welcome, {user.name}</span>
                   <div className="flex gap-2">
-                    {user.role === 'Admin' && (
-                      <Link to="/dashboard" className="text-[10px] text-indigo-600 font-bold hover:underline">Open Dashboard</Link>
-                    )}
+                    {user.role === 'Admin' && <Link to="/dashboard" className="text-[10px] text-indigo-600 font-bold hover:underline">Open Dashboard</Link>}
                     <button onClick={onLogout} className="text-[10px] text-red-500 font-bold hover:underline">Sign Out</button>
                   </div>
                 </div>
@@ -183,6 +182,8 @@ const Hotels = ({ user, onLogout }) => {
               </>
             )}
           </div>
+          
+          <MobileNav user={user} onLogout={onLogout} currentPath="/hotels" />
         </nav>
       </header>
 

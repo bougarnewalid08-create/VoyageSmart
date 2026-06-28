@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import FavoriteButton from './FavoriteButton'
+import MobileNav from './MobileNav'
 import { useFavorites } from '../hooks/useFavorites'
 import { BACKEND_URL } from '../api/axios'
 import api from '../api/axios'
@@ -95,7 +96,7 @@ const Stays = ({ user, onLogout }) => {
             {user && <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/my-reservations">My Bookings</Link>}
           </div>
 
-          <div className="flex-1 flex items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
+          <div className="hidden md:flex flex-1 items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
             {user ? (
               <div className="flex items-center gap-4">
                 <div className="flex flex-col items-end">
@@ -116,6 +117,8 @@ const Stays = ({ user, onLogout }) => {
               </>
             )}
           </div>
+          
+          <MobileNav user={user} onLogout={onLogout} currentPath="/stays" />
         </nav>
       </header>
 

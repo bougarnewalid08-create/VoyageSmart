@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import api, { BACKEND_URL } from '../api/axios'
+import MobileNav from './MobileNav'
 
 const MyReservations = ({ user, onLogout }) => {
   const [reservations, setReservations] = useState([])
@@ -386,9 +387,10 @@ const MyReservations = ({ user, onLogout }) => {
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/stays">Stays</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/flights">Flights</Link>
             <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/plans">Plans</Link>
+            <Link className="text-gray-500 hover:text-indigo-600 transition-colors" to="/favorites">Favorites</Link>
             <Link className="text-indigo-600 border-b-2 border-indigo-600 pb-1" to="/my-reservations">My Bookings</Link>
           </div>
-          <div className="flex-1 flex items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
+          <div className="hidden md:flex flex-1 items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
             {user && (
               <div className="flex items-center gap-4">
                 <div className="flex flex-col items-end">
@@ -404,6 +406,7 @@ const MyReservations = ({ user, onLogout }) => {
               </div>
             )}
           </div>
+          <MobileNav user={user} onLogout={onLogout} currentPath="/my-reservations" />
         </nav>
       </header>
 

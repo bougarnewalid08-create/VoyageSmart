@@ -13,7 +13,9 @@ import {
   Trash2,
   Edit2,
   Image as ImageIcon,
-  Plane
+  Plane,
+  Menu,
+  X
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import api, { BACKEND_URL } from '../api/axios'
@@ -30,6 +32,7 @@ const Dashboard = ({ user, onLogout }) => {
   const [activeTab, setActiveTab] = useState('selector')
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingStayId, setEditingStayId] = useState(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   
   const initialFormState = {
     name: '',
@@ -601,7 +604,27 @@ const Dashboard = ({ user, onLogout }) => {
 
   return (
     <div className="flex min-h-screen bg-[#f8fafc]">
-      <aside className="w-80 bg-white border-r border-slate-100 flex flex-col p-8 fixed h-full z-20">
+      {/* Mobile Header */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-20 bg-white border-b border-slate-100 flex items-center justify-between px-6 z-30">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-100">V</div>
+          <span className="text-xl font-black text-slate-900 tracking-tighter">VoyageSmart</span>
+        </div>
+        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2 text-slate-600 bg-slate-50 rounded-xl">
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Sidebar Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`w-80 bg-white border-r border-slate-100 flex flex-col p-8 fixed h-full z-50 transition-transform duration-300 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
         <button 
           onClick={() => setActiveTab('selector')}
           className="flex items-center gap-3 mb-12 hover:opacity-80 transition-opacity"
@@ -621,7 +644,10 @@ const Dashboard = ({ user, onLogout }) => {
           ].map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => {
+                setActiveTab(item.id);
+                setIsMobileMenuOpen(false);
+              }}
               className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-sm font-bold transition-all ${activeTab === item.id ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-100' : 'text-slate-400 hover:bg-slate-50 hover:text-slate-900'}`}
             >
               <item.icon size={20} />
@@ -636,34 +662,32 @@ const Dashboard = ({ user, onLogout }) => {
         </button>
       </aside>
 
-      <main className="flex-1 ml-80 p-12 overflow-y-auto">
-        <header className="flex items-center justify-between mb-12">
+      <main className="flex-1 lg:ml-80 p-4 lg:p-12 mt-20 lg:mt-0 overflow-y-auto w-full max-w-[100vw] lg:max-w-none">
+        <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
             <h1 className="text-3xl font-black text-slate-900 tracking-tight">Admin Dashboard</h1>
             <p className="text-slate-400 font-medium mt-1">Welcome back, {user?.name}</p>
           </div>
-          <div className="flex items-center gap-6">
-            <div className="relative">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 w-full md:w-auto">
+            <div className="relative w-full sm:w-auto">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
               <input 
                 type="text" 
                 placeholder="Search listings..." 
-                className="pl-12 pr-6 py-3.5 bg-white border border-slate-100 rounded-2xl text-sm font-medium w-80 focus:ring-2 focus:ring-indigo-600 outline-none transition-all shadow-sm"
+                className="pl-12 pr-6 py-3.5 bg-white border border-slate-100 rounded-2xl text-sm font-medium w-full md:w-80 focus:ring-2 focus:ring-indigo-600 outline-none transition-all shadow-sm"
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
               />
             </div>
-            <button className="w-12 h-12 bg-white border border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 relative hover:bg-slate-50 transition-all">
-              <Bell size={20} />
-              <span className="absolute top-3 right-3 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white"></span>
-            </button>
-            <div className="flex items-center gap-3 pl-6 border-l border-slate-100">
-              <div className="text-right">
-                <p className="text-sm font-bold text-slate-900">{user?.name}</p>
-                <p className="text-[10px] text-indigo-600 font-bold uppercase tracking-widest">{user?.role}</p>
-              </div>
-              <div className="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 font-black">
-                {user?.name?.charAt(0)}
+            <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto justify-between sm:justify-start">
+              <div className="flex items-center gap-3 sm:pl-6 sm:border-l border-slate-100">
+                <div className="text-right">
+                  <p className="text-sm font-bold text-slate-900">{user?.name}</p>
+                  <p className="text-[10px] text-indigo-600 font-bold uppercase tracking-widest">{user?.role}</p>
+                </div>
+                <div className="w-12 h-12 shrink-0 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 font-black">
+                  {user?.name?.charAt(0)}
+                </div>
               </div>
             </div>
           </div>

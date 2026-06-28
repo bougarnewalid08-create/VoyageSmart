@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, MapPin, Calendar, Wallet, Compass, CheckCircle2, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import MobileNav from './MobileNav'
 
 const LandingPage = ({ user, onLogout }) => {
   const [isGenerating, setIsGenerating] = useState(false)
@@ -36,7 +37,7 @@ const LandingPage = ({ user, onLogout }) => {
           </div>
 
           {/* Right Column: Profile/Auth */}
-          <div className="flex-1 flex items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
+          <div className="hidden md:flex flex-1 items-center justify-end gap-4 font-['Plus_Jakarta_Sans'] text-sm font-medium">
             {user ? (
               <div className="flex items-center gap-4">
                 <div className="flex flex-col items-end">
@@ -72,6 +73,8 @@ const LandingPage = ({ user, onLogout }) => {
               </>
             )}
           </div>
+          
+          <MobileNav user={user} onLogout={onLogout} currentPath="/" />
         </nav>
       </header>
 
