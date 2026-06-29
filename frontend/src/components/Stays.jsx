@@ -21,7 +21,7 @@ const Stays = ({ user, onLogout }) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
     propertyType: 'All',
-    priceRange: [100, 2500],
+    priceRange: [10, 2500],
     features: []
   });
   const [searchInput, setSearchInput] = useState('');

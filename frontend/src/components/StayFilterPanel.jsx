@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const StayFilterPanel = ({ isMobile, onClose, onApplyFilters, currentFilters }) => {
   const [propertyType, setPropertyType] = useState(currentFilters?.propertyType || 'All');
-  const [priceRange, setPriceRange] = useState(currentFilters?.priceRange || [100, 2500]);
+  const [priceRange, setPriceRange] = useState(currentFilters?.priceRange || [10, 2500]);
   const [selectedFeatures, setSelectedFeatures] = useState(currentFilters?.features || []);
 
   const types = ['All', 'Villa', 'Apartment', 'Studio'];
@@ -33,11 +33,11 @@ const StayFilterPanel = ({ isMobile, onClose, onApplyFilters, currentFilters }) 
 
   const handleReset = () => {
     setPropertyType('All');
-    setPriceRange([100, 2500]);
+    setPriceRange([10, 2500]);
     setSelectedFeatures([]);
     onApplyFilters({
       propertyType: 'All',
-      priceRange: [100, 2500],
+      priceRange: [10, 2500],
       features: []
     });
     if (isMobile) onClose();
@@ -87,7 +87,7 @@ const StayFilterPanel = ({ isMobile, onClose, onApplyFilters, currentFilters }) 
           </div>
           <input 
             type="range" 
-            min="100" 
+            min="10" 
             max="2500" 
             step="50"
             value={priceRange[1]}
