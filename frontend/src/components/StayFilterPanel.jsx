@@ -5,7 +5,7 @@ const StayFilterPanel = ({ isMobile, onClose, onApplyFilters, currentFilters }) 
   const [priceRange, setPriceRange] = useState(currentFilters?.priceRange || [100, 2500]);
   const [selectedFeatures, setSelectedFeatures] = useState(currentFilters?.features || []);
 
-  const types = ['All', 'Villa', 'Apartment', 'Cabin', 'Cottage'];
+  const types = ['All', 'Villa', 'Apartment', 'Studio'];
   
   const featuresList = [
     { label: 'Private Pool', icon: 'pool', id: 'Private Pool' },

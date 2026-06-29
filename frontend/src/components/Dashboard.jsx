@@ -837,7 +837,7 @@ const Dashboard = ({ user, onLogout }) => {
                     <div className="space-y-2">
                       <label className="text-[10px] uppercase tracking-widest font-bold text-gray-400">Property Type</label>
                       <select className="w-full p-4 rounded-2xl bg-gray-50 border border-gray-100 outline-none" value={formData.property_type} onChange={e => setFormData({...formData, property_type: e.target.value})}>
-                        <option>Villa</option><option>Apartment</option><option>Cabin</option><option>House</option><option>Cottage</option>
+                        <option>Villa</option><option>Apartment</option><option>Studio</option>
                       </select>
                     </div>
                     <div className="md:col-span-2 space-y-2">
