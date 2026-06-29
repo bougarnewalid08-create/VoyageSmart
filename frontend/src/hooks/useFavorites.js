@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { BACKEND_URL } from '../api/axios';
 
 export const useFavorites = () => {
   const [favorites, setFavorites] = useState([]);
@@ -12,7 +13,7 @@ export const useFavorites = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/favorites', {
+      const response = await fetch(`${BACKEND_URL}/api/favorites`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Accept': 'application/json',
