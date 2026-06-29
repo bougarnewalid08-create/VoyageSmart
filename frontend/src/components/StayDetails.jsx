@@ -63,12 +63,6 @@ const StayDetails = ({ user, onLogout }) => {
       return
     }
 
-    if (!id || !id.startsWith('db-')) {
-      setBookingStatus('error')
-      setBookingMessage('Demo stays cannot be reserved. Browse our real stays inventory!')
-      return
-    }
-
     const dbId = id.replace('db-', '')
 
     setReserving(true)
