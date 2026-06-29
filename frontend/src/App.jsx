@@ -13,7 +13,6 @@ import HotelDetails from './components/HotelDetails'
 import StayDetails from './components/StayDetails'
 import MyReservations from './components/MyReservations'
 import Flights from './components/Flights'
-
 // Protected Route Component
 const ProtectedRoute = ({ user, children, adminOnly = false }) => {
   if (!user) {

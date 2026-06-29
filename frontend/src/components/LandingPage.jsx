@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, MapPin, Calendar, Wallet, Compass, CheckCircle2, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
@@ -7,6 +7,10 @@ import MobileNav from './MobileNav'
 const LandingPage = ({ user, onLogout }) => {
   const [isGenerating, setIsGenerating] = useState(false)
   const [showPlan, setShowPlan] = useState(false)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const handleGenerate = () => {
     setIsGenerating(true)
@@ -125,24 +129,24 @@ const LandingPage = ({ user, onLogout }) => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {[
-              { title: 'Boutique Stays', icon: <Compass className="text-indigo-600" size={32} />, desc: 'Unique villas and homes curated by our AI for comfort and style.' },
-              { title: 'Luxury Hotels', icon: <MapPin className="text-indigo-600" size={32} />, desc: 'Five-star experiences at the best rates in the world\'s top cities.' },
-              { title: 'Global Flights', icon: <Sparkles className="text-indigo-600" size={32} />, desc: 'Seamless booking for international and domestic routes.' },
-              { title: 'Smart Plans', icon: <Calendar className="text-indigo-600" size={32} />, desc: 'Custom itineraries tailored to your budget and travel style.' }
+              { title: 'Boutique Stays', path: '/stays', icon: <Compass className="text-indigo-600" size={32} />, desc: 'Unique villas and homes curated by our AI for comfort and style.' },
+              { title: 'Luxury Hotels', path: '/hotels', icon: <MapPin className="text-indigo-600" size={32} />, desc: 'Five-star experiences at the best rates in the world\'s top cities.' },
+              { title: 'Global Flights', path: '/flights', icon: <Sparkles className="text-indigo-600" size={32} />, desc: 'Seamless booking for international and domestic routes.' },
+              { title: 'Smart Plans', path: '/plans', icon: <Calendar className="text-indigo-600" size={32} />, desc: 'Custom itineraries tailored to your budget and travel style.' }
             ].map((item, i) => (
               <motion.div
                 key={i}
                 whileHover={{ y: -8 }}
-                className="p-8 rounded-[32px] bg-[#f8faff] border border-gray-50 hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300"
+                className="p-8 rounded-[32px] bg-[#f8faff] border border-gray-50 hover:shadow-xl hover:shadow-indigo-500/5 transition-all duration-300 flex flex-col"
               >
                 <div className="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-6">
                   {item.icon}
                 </div>
                 <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
-                <button className="mt-6 text-indigo-600 font-bold text-sm flex items-center gap-2 group">
+                <p className="text-gray-500 text-sm leading-relaxed flex-grow">{item.desc}</p>
+                <Link to={item.path} className="mt-6 text-indigo-600 font-bold text-sm flex items-center gap-2 group w-fit">
                   Book now <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                </button>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -155,9 +159,9 @@ const LandingPage = ({ user, onLogout }) => {
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Top Destinations</h2>
               <p className="text-gray-500">Our AI's most-recommended escapes for this season.</p>
             </div>
-            <button className="text-indigo-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">
+            <Link to="/hotels" className="text-indigo-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">
               Explore all <span className="material-symbols-outlined">arrow_forward</span>
-            </button>
+            </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -269,9 +273,9 @@ const LandingPage = ({ user, onLogout }) => {
                 <Link to="/signup" className="px-10 py-5 bg-white text-indigo-600 rounded-2xl font-bold text-lg shadow-xl hover:bg-gray-50 active:scale-95 transition-all">
                   Start Planning Now
                 </Link>
-                <button className="px-10 py-5 border-2 border-white/30 text-white rounded-2xl font-bold text-lg hover:bg-white/10 active:scale-95 transition-all">
+                <Link to="/stays" className="px-10 py-5 border-2 border-white/30 text-white rounded-2xl font-bold text-lg hover:bg-white/10 active:scale-95 transition-all inline-block">
                   View All Deals
-                </button>
+                </Link>
               </div>
             </div>
           </div>

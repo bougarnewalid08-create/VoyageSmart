@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import api, { BACKEND_URL } from '../api/axios'
@@ -93,7 +93,11 @@ const Hotels = ({ user, onLogout }) => {
   const [dbHotels, setDbHotels] = React.useState([])
   const [loading, setLoading] = React.useState(true)
   const { isFavorite } = useFavorites();
-  const [error, setError] = React.useState(null)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const [filters, setFilters] = React.useState({
     priceRange: [0, 1000],

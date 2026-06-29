@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import FavoriteButton from './FavoriteButton'
@@ -13,7 +13,11 @@ const Stays = ({ user, onLogout }) => {
   const [dbStays, setDbStays] = useState([]);
   const [loading, setLoading] = useState(true)
   const { isFavorite } = useFavorites();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, []);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filters, setFilters] = useState({
     propertyType: 'All',

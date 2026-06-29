@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import api, { BACKEND_URL } from '../api/axios'
@@ -92,7 +92,11 @@ const Plans = ({ user, onLogout }) => {
   const [itineraries, setItineraries] = useState([]);
   const [loading, setLoading] = useState(true)
   const { isFavorite } = useFavorites();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, []);
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({ duration: null, budget: null, theme: null });
 

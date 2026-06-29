@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, Search, Calendar, Users, Briefcase, Plus, Minus } from 'lucide-react'
@@ -12,6 +12,10 @@ const Flights = ({ user, onLogout }) => {
   const [loading, setLoading] = useState(true)
   const { isFavorite } = useFavorites()
   const [error, setError] = useState(null)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   
   // Search parameters
   const [departure, setDeparture] = useState('')
