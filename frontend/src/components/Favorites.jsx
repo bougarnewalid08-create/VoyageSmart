@@ -8,7 +8,7 @@ import { HeartCrack } from 'lucide-react';
 
 const Favorites = ({ user, onLogout }) => {
   const { favorites, loading: favoritesLoading, isFavorite, refreshFavorites } = useFavorites();
-  const [activeTab, setActiveTab] = useState('stays');
+  const [activeTab, setActiveTab] = useState('hotels');
   
   // Data states
   const [items, setItems] = useState({
@@ -116,7 +116,7 @@ const Favorites = ({ user, onLogout }) => {
 
         {/* Tabs */}
         <div className="flex overflow-x-auto no-scrollbar gap-4 mb-8 pb-2">
-          {['stays', 'hotels', 'flights', 'plans'].map(tab => (
+          {['hotels', 'stays', 'flights', 'plans'].map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
