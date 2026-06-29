@@ -20,22 +20,31 @@ const FavoriteButton = ({ itemType, itemId, initialIsFavorite, onToggle, classNa
       return;
     }
 
-    setLoading(true);
+    // Optimistic UI Update: change state immediately
+    const previousState = isFavorite;
+    const expectedState = !isFavorite;
+    setIsFavorite(expectedState);
+    if (onToggle) onToggle(expectedState);
+
     try {
       const response = await api.post('/favorites/toggle', {
         item_type: itemType,
         item_id: itemId
       });
 
+      // If the server returns a different state than what we optimistically set (rare), fix it
       if (response.status === 200 || response.status === 201) {
-        const newValue = response.data.status === 'added';
-        setIsFavorite(newValue);
-        if (onToggle) onToggle(newValue);
+        const actualValue = response.data.status === 'added';
+        if (actualValue !== expectedState) {
+          setIsFavorite(actualValue);
+          if (onToggle) onToggle(actualValue);
+        }
       }
     } catch (error) {
       console.error("Error toggling favorite:", error);
-    } finally {
-      setLoading(false);
+      // Revert back on error
+      setIsFavorite(previousState);
+      if (onToggle) onToggle(previousState);
     }
   };
 
