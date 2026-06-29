@@ -25,11 +25,6 @@ Route::get('/flights/{id}', [\App\Http\Controllers\FlightController::class, 'sho
 Route::get('/plans', [\App\Http\Controllers\PlanController::class, 'index']);
 Route::get('/plans/{id}', [\App\Http\Controllers\PlanController::class, 'show']);
 
-Route::get('/run-seeders', function() {
-    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--class' => 'StaySeeder']);
-    return response()->json(['message' => 'StaySeeder executed successfully!']);
-});
-
 // Protected Routes
 Route::middleware('auth:sanctum')->group(function () {
     // Stay Management
