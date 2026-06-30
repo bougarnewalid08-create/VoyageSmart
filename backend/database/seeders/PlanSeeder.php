@@ -372,7 +372,7 @@ class PlanSeeder extends Seeder
                 'duration' => '5 Days',
                 'stops' => ['Casablanca', 'Marrakech'],
                 'price' => 1500.00,
-                'image' => 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?q=80&w=2070&auto=format&fit=crop',
+                'image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZHkOciz7N-CsZIwci1DxyGTRvHdcG3un38g&s',
                 'theme' => 'Cultural',
                 'budget_level' => 'Premium',
                 'max_travelers' => 8,
