@@ -520,13 +520,19 @@ class StaySeeder extends Seeder
                 'order' => 0
             ]);
 
-            // Add some gallery images (placeholder)
-            for ($i = 1; $i <= 3; $i++) {
+            // Add gallery images provided by user
+            $galleryUrls = [
+                'https://cf.bstatic.com/xdata/images/hotel/max1024x768/377851151.jpg?k=e675d002676a413d5d7999d5b6acb3828f15ba8efdbaf163c93e1cbf05f23dee&o=',
+                'https://cf.bstatic.com/xdata/images/hotel/max1024x768/585074194.jpg?k=2c04492ce704c7bed22b13d7b9a6ea840566931029660cf43b56b7041d9f972d&o=',
+                'https://cf.bstatic.com/xdata/images/hotel/max1024x768/585074194.jpg?k=2c04492ce704c7bed22b13d7b9a6ea840566931029660cf43b56b7041d9f972d&o='
+            ];
+
+            foreach ($galleryUrls as $index => $url) {
                 StayImage::create([
                     'stay_id' => $stay->id,
-                    'image' => 'https://images.unsplash.com/photo-' . ['1499793983690-e29da59ef1c2', '1613490908653-fd8fb92797cc', '1582268611958-ebfd161ef9cf'][rand(0, 2)] . '?q=80&w=2070&auto=format&fit=crop',
+                    'image' => $url,
                     'is_main' => false,
-                    'order' => $i
+                    'order' => $index + 1
                 ]);
             }
 
