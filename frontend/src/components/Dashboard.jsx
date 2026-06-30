@@ -680,6 +680,20 @@ const Dashboard = ({ user, onLogout }) => {
               />
             </div>
             <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto justify-between sm:justify-start">
+              <button 
+                onClick={() => {
+                  api.get('/run-seeders')
+                    .then(() => alert('Images synchronisées sur Railway ! Rafraîchissez la page client.'))
+                    .catch(() => alert('Erreur lors de la synchronisation.'));
+                }}
+                className="px-4 py-2.5 bg-green-50 hover:bg-green-100 text-green-600 rounded-xl text-sm font-bold transition-all flex items-center gap-2"
+              >
+                Sync Railway
+              </button>
+              <Link to="/" className="px-4 py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-xl text-sm font-bold transition-all flex items-center gap-2">
+                <Home size={16} />
+                Site Client
+              </Link>
               <div className="flex items-center gap-3 sm:pl-6 sm:border-l border-slate-100">
                 <div className="text-right">
                   <p className="text-sm font-bold text-slate-900">{user?.name}</p>
