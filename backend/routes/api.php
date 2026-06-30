@@ -56,3 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/users', [UserController::class, 'index']);
     });
 });
+Route::get('/run-seeders', function () {
+    \App\Models\Plan::where('title', 'Moroccan Imperial Cities')->update(['image' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZHkOciz7N-CsZIwci1DxyGTRvHdcG3un38g&s']);
+    return response()->json(['message' => 'Image updated successfully!']);
+});
